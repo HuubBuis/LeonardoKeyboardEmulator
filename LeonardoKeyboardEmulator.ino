@@ -162,16 +162,21 @@ port_states_t get_port_state(io_port_t *io_port) {
       if (state == HIGH) register_port_state(io_port, port_state_I);    // changed to Inactive
       else register_port_state(io_port, port_state_A);                  // bounce, changed to Active
       break;
-    case port_state_I:                                                  // Inactive
-      if (state == HIGH) register_port_state(io_port, port_state_IA);   // changing to Active
+    case port_state_I:             
+//    if (state == LOW) io_port->port_state = port_state_IA;   // changing to Active// Inactive
+//      if (state == HIGH) register_port_state(io_port, port_state_IA);   // changing to Active
+      if (state == LOW) register_port_state(io_port, port_state_IA);   // changing to Active
       break;
     case port_state_IA:                                                 // Inactive, changing to Active
-      if (state == HIGH) register_port_state(io_port, port_state_A);    // changed to Inactive
+//    if (state == LOW) io_port->port_state = port_state_A;   // changed to Inactive
+//      if (state == HIGH) register_port_state(io_port, port_state_A);    // changed to Inactive
+      if (state == LOW) register_port_state(io_port, port_state_A);    // changed to Inactive
       else register_port_state(io_port, port_state_I);                  // bounce, changed to Inactive
       break;
     default:
       print_state("Port state unprocessed: ", str_port_state(io_port->port_state)); // must not get here, set to undefined and signal fault condition
-      io_port->port_state = port_state_U;
+//      io_port->port_state = port_state_U;
+      register_port_state(io_port, port_state_U); 
       break;
   }
 #ifdef DEBUG
